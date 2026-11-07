@@ -1,0 +1,17 @@
+# sct_train_mlp (CPU, 1 pass of SGD, lr 0.01), timed with bash 'time', then sct_test_mlp, run 2026-11-06
+Trained on 60000 samples and saved the MLP to test.nnmlp.
+
+real	0m2.452s
+user	0m0.000s
+sys	0m0.015s
+0: 963/980 (98.27%)
+1: 1124/1135 (99.03%)
+2: 899/1032 (87.11%)
+3: 964/1010 (95.45%)
+4: 937/982 (95.42%)
+5: 834/892 (93.50%)
+6: 892/958 (93.11%)
+7: 924/1028 (89.88%)
+8: 910/974 (93.43%)
+9: 953/1009 (94.45%)
+Overall accuracy of test.nnmlp: 9400/10000 (94.00%).

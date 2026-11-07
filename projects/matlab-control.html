@@ -38,32 +38,61 @@
         <p class="eyebrow">Coursework</p>
         <h1>Sensor Control Loops in MATLAB</h1>
         <ul class="project-meta">
-          <li><strong>Student</strong><span>Role</span></li>
-          <li><strong>TODO</strong><span>When</span></li>
-          <li><strong>MATLAB</strong><span>Tools</span></li>
+          <li><strong>Student (individual technical report)</strong><span>Role</span></li>
+          <li><strong>Jan 2026</strong><span>When</span></li>
+          <li><strong>MATLAB, Arduino, HC-SR04</strong><span>Tools</span></li>
         </ul>
-        <!-- Replace this cover with: <div class="project-cover"><img src="../assets/img/matlab-control-cover.jpg" alt="..."></div> -->
-        <div class="project-cover media-6" aria-hidden="true"><svg viewBox="0 0 120 80"><path d="M10 65 H110 M15 70 V10"/><path d="M15 55 C35 55, 40 20, 60 25 S 90 50, 110 30"/></svg></div>
+        <div class="project-cover"><img src="matlab-control/setup.jpg" alt="Kona328 Arduino-compatible board wired with red, white, yellow and black jumper leads to an HC-SR04 ultrasonic ranging module on a breadboard"></div>
 
         <div class="prose">
           <h2>Overview</h2>
-          <p>Simulated and recorded sensor control data loops in MATLAB, then processed the data to evaluate the behaviour of the system.</p>
+          <p>A Mechatronics technical report testing whether a low-cost HC-SR04 ultrasonic ranging module could serve as a landing terrain proximity detection system for a slow drone. I read the sensor into MATLAB through an Arduino, calibrated it against a ruler from 10 to 50 cm, and mapped the real edges of its beam cone, then used the results to sketch a rotating sensor mount and motor-driver circuit for the landing system.</p>
 
           <h2>What I did</h2>
           <ul>
-            <li>Simulated sensor control loops in MATLAB.</li>
-            <li>Recorded and processed the resulting data.</li>
+            <li>Wired the sensor to an Arduino UNO-compatible board and wrote a MATLAB script that takes 100 readings at a time through the Arduino support package and averages them.</li>
+            <li>Test 1 (calibration): logged 100 readings at each fixed distance from 10 to 50 cm in 5 cm steps and fitted a linear correction, <em>u = x + (0.06x + 0.004)</em> in metres, with R² = 0.80.</li>
+            <li>Checked the model on fresh single readings: mean accuracy rose from 92.2% for the raw readings to 98.2% after correction.</li>
+            <li>Test 2 (beam angle): moved a 1 cm wide target along a ruler 30 cm from the sensor in 0.5 cm steps and scored accuracy at each angle. The target was only detected between −16.6° and +14.9°, against ±15° in the datasheet.</li>
+            <li>Found the cone was not symmetric about the centre of the sensor: its origin sits about 0.5 cm to the right, a systematic error that can now be corrected.</li>
+            <li>Proposed a landing system that tilts the sensor at 15° and spins it with a 12 V DC motor through an L298N driver, widening coverage from 30° to 60°.</li>
           </ul>
 
           <h2>What I learned</h2>
-          <p>TODO: add plots of the response and what the results showed.</p>
+          <p>A datasheet is a starting point, not a measurement: this sensor consistently under-read by up to about 3 cm, and its beam was offset and slightly wider on one side than specified. Simple calibration made a cheap sensor far more useful, but the fit only explained 80% of the variation and did not pass through every error bar, so a better model is still needed. I also learned to keep claims inside the tested range: 10 to 50 cm is far short of the few metres a real landing system needs, and I did not test unreflective or uneven surfaces or the sensor in flight.</p>
 
           <h2>Gallery</h2>
-          <!-- Swap each .ph placeholder for <img src="../assets/img/matlab-control-1.jpg" alt="..."> -->
           <div class="gallery">
-            <figure><div class="ph">Image / CAD render</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Simulation / results plot</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Final build / output</div><figcaption>TODO: caption</figcaption></figure>
+            <figure>
+              <a href="matlab-control/calibration-offset.png" target="_blank" rel="noopener">
+                <img src="matlab-control/calibration-offset.png" alt="Scatter plot with error bars of correction offset in centimetres against exact distance from 10 to 50 cm, rising from 0.4 cm to about 3 cm, with an orange linear fit line" loading="lazy">
+              </a>
+              <figcaption>Test 1: the mean offset of 100 readings grows from 0.4 cm at 10 cm to about 3 cm at 50 cm, and a linear fit gives R² = 0.80. Data: my raw sensor readings.</figcaption>
+            </figure>
+            <figure>
+              <a href="matlab-control/model-verification.png" target="_blank" rel="noopener">
+                <img src="matlab-control/model-verification.png" alt="Bar chart of reading error in millimetres at each distance from 10 to 50 cm: grey raw-reading bars all negative down to about minus 31 mm, blue calibrated bars mostly within 7 mm of zero" loading="lazy">
+              </a>
+              <figcaption>Calibration check on fresh readings: mean accuracy rises from 92.2% raw to 98.2% with the model. Data: Table 2 of my report.</figcaption>
+            </figure>
+            <figure>
+              <a href="matlab-control/angle-accuracy.png" target="_blank" rel="noopener">
+                <img src="matlab-control/angle-accuracy.png" alt="Line plot of accuracy from 0 to 1 against measurement angle in degrees: near 1 between about −16.6° and +14.9°, near 0 outside, with dashed lines at the datasheet's ±15°" loading="lazy">
+              </a>
+              <figcaption>Test 2: a 1 cm target is only detected between −16.6° and +14.9°, so the cone is slightly off-centre. Data: Table 3 of my report.</figcaption>
+            </figure>
+            <figure>
+              <a href="matlab-control/test-2-setup.jpg" target="_blank" rel="noopener">
+                <img src="matlab-control/test-2-setup.jpg" alt="Test 2 setup: a 30 cm ruler laid across a desk in front of the ultrasonic sensor, with a narrow white block standing on the ruler as the target" loading="lazy">
+              </a>
+              <figcaption>Test 2 setup: the 1 cm wide target is stepped along the ruler 30 cm from the sensor.</figcaption>
+            </figure>
+            <figure>
+              <a href="matlab-control/landing-system-circuit.png" target="_blank" rel="noopener">
+                <img src="matlab-control/landing-system-circuit.png" alt="Circuit diagram: Arduino UNO connected to the ultrasonic ranging module and to an L298N motor driver that powers a 12 V DC motor from a 12 V supply" loading="lazy">
+              </a>
+              <figcaption>Proposed landing system circuit: an L298N driver lets the Arduino control a 12 V motor that rotates the sensor.</figcaption>
+            </figure>
           </div>
 
           <!-- Optional: link to code or a report

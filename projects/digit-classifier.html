@@ -39,37 +39,52 @@
         <h1>Handwritten Digit Classifier</h1>
         <ul class="project-meta">
           <li><strong>Sole developer</strong><span>Role</span></li>
-          <li><strong>TODO</strong><span>When</span></li>
+          <li><strong>August 2026</strong><span>When</span></li>
           <li><strong>Rust, OpenCL</strong><span>Tools</span></li>
         </ul>
-        <!-- Replace this cover with: <div class="project-cover"><img src="../assets/img/digit-classifier-cover.jpg" alt="..."></div> -->
-        <div class="project-cover media-3" aria-hidden="true"><svg viewBox="0 0 120 80"><circle cx="20" cy="20" r="4"/><circle cx="20" cy="40" r="4"/><circle cx="20" cy="60" r="4"/><circle cx="60" cy="28" r="4"/><circle cx="60" cy="52" r="4"/><circle cx="100" cy="40" r="4"/><path d="M24 20 L56 28 M24 40 L56 52 M24 60 L56 28 M64 28 L96 40 M64 52 L96 40"/></svg></div>
+        <div class="project-cover"><img src="digit-classifier/mnist-samples.png" alt="Two rows of handwritten digits 0 to 9 from the MNIST test set, white on black, each labelled with its digit"></div>
 
         <div class="prose">
           <h2>Overview</h2>
-          <p>A multi-layer perceptron that predicts and classifies handwritten digits from 0 to 9. The network was trained on the MNIST database, written in Rust and hardware-accelerated using OpenCL.</p>
+          <p>A multi-layer perceptron that predicts and classifies handwritten digits from 0 to 9. The network was trained on the MNIST database, written in Rust from scratch and hardware-accelerated using OpenCL. The saved 784 → 30 → 10 network, which holds 23,860 learned weights and biases, correctly classifies <strong>96.2%</strong> of the 10,000 test images it never saw during training.</p>
 
           <h2>What I did</h2>
           <ul>
-            <li>Implemented the multi-layer perceptron, forward pass and backpropagation in Rust.</li>
-            <li>Wrote OpenCL kernels to accelerate training on the GPU.</li>
-            <li>Trained and evaluated the model on the MNIST dataset.</li>
+            <li>Implemented the multi-layer perceptron in Rust: Xavier initialisation, a ReLU hidden layer, a softmax output and a cross-entropy loss.</li>
+            <li>Derived the backpropagation gradients by hand, including the softmax and cross-entropy derivatives, and wrote them up alongside the code.</li>
+            <li>Wrote a CPU trainer that updates the weights after every sample (stochastic gradient descent).</li>
+            <li>Wrote OpenCL kernels for the forward pass, backpropagation and weight updates, so the GPU trains a whole batch of 32 samples in parallel. The dataset is uploaded to the GPU once and the network is only read back at the end.</li>
+            <li>Added unit tests that check the GPU trainer produces the same gradients as the CPU trainer, plus a binary archive format for saving and loading trained networks.</li>
+            <li>Built loaders for the MNIST files and for ordinary images, so the network can classify my own drawings.</li>
           </ul>
 
           <h2>What I learned</h2>
-          <p>TODO: add accuracy figures, training time on CPU vs GPU, and what you would change next.</p>
+          <p>Writing every step myself, from the gradient derivation to the GPU kernels, showed me exactly what a neural network library hides. Parallelism paid off even on an integrated AMD GPU: one pass over the 60,000 training images took about 0.42 s on the GPU against 2.45 s for the single-threaded CPU trainer, which made it practical to train for 100 epochs in about 43 s. That longer training lifted test accuracy from 94.0% after one CPU pass to 96.7%. A small network still has clear weak spots: 0 and 1 are recognised over 98% of the time, while 3, 8 and 9 sit near 95%. Checking the GPU against the simpler CPU trainer in unit tests was what made the faster code trustworthy.</p>
 
           <h2>Gallery</h2>
-          <!-- Swap each .ph placeholder for <img src="../assets/img/digit-classifier-1.jpg" alt="..."> -->
           <div class="gallery">
-            <figure><div class="ph">Image / CAD render</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Simulation / results plot</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Final build / output</div><figcaption>TODO: caption</figcaption></figure>
+            <figure>
+              <a href="digit-classifier/accuracy-per-digit.png" target="_blank" rel="noopener">
+                <img src="digit-classifier/accuracy-per-digit.png" alt="Bar chart of test accuracy for each digit from 0 to 9, between 94.8% and 98.4%, with a dashed line at the overall 96.20%" loading="lazy">
+              </a>
+              <figcaption>The saved network scores 96.20% on the 10,000 MNIST test images. 0 and 1 are easiest, and 3 and 8 are hardest. Data: output of my sct_test_mlp program.</figcaption>
+            </figure>
+            <figure>
+              <a href="digit-classifier/cpu-vs-gpu.png" target="_blank" rel="noopener">
+                <img src="digit-classifier/cpu-vs-gpu.png" alt="Two bar charts: one pass over the training set takes 2.45 s on the CPU and 0.42 s on the GPU; test accuracy is 94.00% after 1 CPU epoch and 96.68% after 100 GPU epochs" loading="lazy">
+              </a>
+              <figcaption>The OpenCL trainer runs one pass over 60,000 images about 6× faster, enough to train 100 epochs in under a minute. The CPU time is the whole run, including loading and saving. Data: my training programs, run in November 2026.</figcaption>
+            </figure>
+            <figure>
+              <a href="digit-classifier/mnist-samples.png" target="_blank" rel="noopener">
+                <img src="digit-classifier/mnist-samples.png" alt="The first two MNIST test images of each digit from 0 to 9, 28 by 28 pixels, white strokes on black" loading="lazy">
+              </a>
+              <figcaption>The input: 28 × 28 greyscale images, one input neuron per pixel. Shown are the first two test images of each digit.</figcaption>
+            </figure>
           </div>
 
-          <!-- Optional: link to code or a report
-          <p><a class="btn btn-ghost" href="https://github.com/AmritSanjeev2007/REPO" target="_blank" rel="noopener">View on GitHub</a></p>
-          -->
+          <p><a class="btn btn-ghost" href="https://github.com/AmritSanjeev2007/mnist-computer-vision-rust" target="_blank" rel="noopener">View on GitHub</a></p>
+
         </div>
       </div>
     </section>

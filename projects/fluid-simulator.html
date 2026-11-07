@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Fluid Simulator | Amrit Sanjeev</title>
-  <meta name="description" content="3D Fluid Simulator: a project by Amrit Sanjeev, Aerospace Engineering student at the University of Bath.">
+  <meta name="description" content="3D Fluid Simulator: a grid-based Navier&ndash;Stokes solver with real-time OpenGL visualisation of flow around custom meshes, a project by Amrit Sanjeev, Aerospace Engineering student at the University of Bath.">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -39,37 +39,76 @@
         <h1>3D Fluid Simulator</h1>
         <ul class="project-meta">
           <li><strong>Sole developer</strong><span>Role</span></li>
-          <li><strong>TODO</strong><span>When</span></li>
-          <li><strong>C++, OpenGL</strong><span>Tools</span></li>
+          <li><strong>October 2026</strong><span>When</span></li>
+          <li><strong>C++20, OpenGL, Dear ImGui</strong><span>Tools</span></li>
         </ul>
-        <!-- Replace this cover with: <div class="project-cover"><img src="../assets/img/fluid-simulator-cover.jpg" alt="..."></div> -->
-        <div class="project-cover media-4" aria-hidden="true"><svg viewBox="0 0 120 80"><rect x="50" y="30" width="20" height="20" rx="3"/><path d="M5 20 C40 20, 40 28, 50 30 M5 40 H50 M5 60 C40 60, 40 52, 50 50 M70 30 C80 28, 85 20, 115 20 M70 40 H115 M70 50 C80 52, 85 60, 115 60"/></svg></div>
+        <div class="project-cover cover-img cover-fill cover-navy"><img src="fluid-simulator/render2.png" alt="Streamlines from the 3D fluid simulator flowing around an aerofoil and a cube"></div>
 
         <div class="prose">
           <h2>Overview</h2>
-          <p>A 3D fluid simulator that uses a grid solver to simulate fluid parcels and calculate properties such as velocity, pressure and temperature within each parcel. It accepts multiple custom 3D mesh inputs and simulates the flow around them.</p>
+          <p>A 3D fluid simulator written in C++ that solves the incompressible Navier&ndash;Stokes equations on a grid and simulates the flow around custom 3D meshes. You upload one or more closed <code>.obj</code> meshes, set the free-stream velocity and fluid properties, and watch the velocity, pressure and temperature fields develop in real time, shown as a slice, a transparent volume or streamlines.</p>
 
           <h2>What I did</h2>
           <ul>
-            <li>Built the grid-based solver for velocity, pressure and temperature fields.</li>
-            <li>Added support for importing custom 3D meshes as obstacles in the flow.</li>
-            <li>Rendered the simulation in real time with OpenGL.</li>
+            <li>Wrote the solver from scratch on a staggered MAC grid: semi-Lagrangian advection with second-order Runge&ndash;Kutta backtracing, implicit viscosity, and a pressure projection solved with a MIC(0)-preconditioned conjugate gradient method.</li>
+            <li>Added temperature as an advected and diffused scalar with optional Boussinesq buoyancy, so meshes can be heated or cooled (fixed surface temperature or insulated).</li>
+            <li>Turned each mesh into a signed distance field on the grid so any number of closed meshes act as solid obstacles, with inflow and outflow boundaries set by the free-stream velocity.</li>
+            <li>Built the OpenGL 4.6 renderer: a colour-mapped slice plane, a ray-marched volume view and streamlines traced from a seed plane upstream of the mesh, with an opacity slider and a colour bar for velocity, pressure, pressure coefficient (C<sub>p</sub>) and temperature.</li>
+            <li>Made the interface with Dear ImGui: Blender-style camera controls (orbit, pan, zoom), <code>.obj</code> upload, click-to-select meshes with a properties panel for position, rotation, scale and surface temperature, an orange hover outline, and a diagnostics panel (CFL number, solver iterations, residual, Reynolds number).</li>
+            <li>Wrote headless solver tests: still water, uniform flow, flow past a sphere, a heated sphere, two obstacles and mesh picking.</li>
           </ul>
 
           <h2>What I learned</h2>
-          <p>TODO: describe the numerical method, stability challenges, and add screenshots or a short video of flow around a mesh.</p>
+          <p>How a grid-based CFD solver is put together: splitting each time step into advection, forces, diffusion and a pressure projection that keeps the flow divergence-free, and why the pressure solve needs a preconditioned iterative method to run at interactive rates. Validating against known results was just as important: for flow past a sphere at 64 cells the solver gives a stagnation pressure coefficient of about 0.85 and a side suction of about &minus;0.66, against inviscid values of 1 and &minus;1.25, and I learned to read that gap as the effect of a coarse grid and numerical diffusion rather than a bug. I also learned to keep the solver separate from the OpenGL code so it can be tested without a window.</p>
 
           <h2>Gallery</h2>
-          <!-- Swap each .ph placeholder for <img src="../assets/img/fluid-simulator-1.jpg" alt="..."> -->
           <div class="gallery">
-            <figure><div class="ph">Image / CAD render</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Simulation / results plot</div><figcaption>TODO: caption</figcaption></figure>
-            <figure><div class="ph">Final build / output</div><figcaption>TODO: caption</figcaption></figure>
+            <figure>
+              <a href="fluid-simulator/aerofoil-pressure.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/aerofoil-pressure.png" alt="Pressure slice through an aerofoil in 1 m/s flow: red high pressure at the leading edge, blue low pressure just behind it, beside the simulator's mesh, fluid and solver controls" loading="lazy">
+              </a>
+              <figcaption>Pressure on a slice through the aerofoil at 1 m/s: high pressure at the stagnation point on the leading edge (red) and suction just behind it (blue).</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/aerofoil-velocity.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/aerofoil-velocity.png" alt="Velocity magnitude slice through the aerofoil, yellow free stream with a dark purple low-speed wake trailing behind the wing" loading="lazy">
+              </a>
+              <figcaption>Velocity magnitude on the same slice, showing the slow wake trailing behind the aerofoil.</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/streamlines-velocity.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/streamlines-velocity.png" alt="Yellow streamlines bending over and around an aerofoil when the free stream has an upward component" loading="lazy">
+              </a>
+              <figcaption>Streamlines around the aerofoil with an upward component in the free stream.</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/volume-velocity.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/volume-velocity.png" alt="Transparent volume rendering of velocity filling the whole simulation box around the aerofoil" loading="lazy">
+              </a>
+              <figcaption>Volume view: the velocity field ray-marched through the whole domain.</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/slice-half-opacity.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/slice-half-opacity.png" alt="Velocity slice at half opacity, with the aerofoil visible through the semi-transparent plane" loading="lazy">
+              </a>
+              <figcaption>The opacity slider fades the slice so the mesh shows through it.</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/hover-outline-selection.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/hover-outline-selection.png" alt="Aerofoil and a cube uploaded as two obstacles, the aerofoil selected with an orange outline and its properties shown in the side panel" loading="lazy">
+              </a>
+              <figcaption>Two uploaded meshes: the selected aerofoil has an orange outline and its properties are open in the panel.</figcaption>
+            </figure>
+            <figure>
+              <a href="fluid-simulator/render1.png" target="_blank" rel="noopener">
+                <img src="fluid-simulator/render1.png" alt="Fluid simulator interface: solver, fluid and mesh controls beside a 3D domain of velocity streamlines around an aerofoil and a cube" loading="lazy">
+              </a>
+              <figcaption>The simulator interface, with solver, fluid and mesh controls alongside the 3D domain.</figcaption>
+            </figure>
           </div>
 
-          <!-- Optional: link to code or a report
-          <p><a class="btn btn-ghost" href="https://github.com/AmritSanjeev2007/REPO" target="_blank" rel="noopener">View on GitHub</a></p>
-          -->
+          <p><a class="btn btn-ghost" href="https://github.com/AmritSanjeev2007/fluid-simulation-cpp" target="_blank" rel="noopener">View on GitHub</a></p>
+         
         </div>
       </div>
     </section>

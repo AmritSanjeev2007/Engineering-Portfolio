@@ -252,6 +252,15 @@ p { margin: 0 0 1em; }
 .project-meta span { color: var(--muted); font-size: 0.85rem; }
 .project-cover { border-radius: var(--radius); overflow: hidden; aspect-ratio: 21 / 9; margin: 2rem 0; display: grid; place-items: center; }
 .project-cover svg { width: 40%; fill: none; stroke: rgba(255,255,255,0.92); stroke-width: 2.2; stroke-linecap: round; }
+/* Image covers: the dark background matches renders with a dark backdrop (e.g. ERA5 globe) */
+.cover-img { position: relative; background: #050a14; }
+.cover-slate { background: linear-gradient(#2c333f, #313846); }
+.cover-navy { background: #0d141f; }
+.cover-white { background: #ffffff; }
+.project-figure { margin: 2rem 0; }
+.project-figure .project-cover { margin: 0; }
+.project-figure figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 0.6rem; }
+.cover-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .prose { max-width: 760px; }
 .prose h2 { margin-top: 2.5rem; font-size: 1.5rem; }
 .prose ul { padding-left: 1.2rem; }
@@ -261,6 +270,12 @@ p { margin: 0 0 1em; }
   aspect-ratio: 4 / 3; border-radius: 10px; border: 2px dashed var(--border); display: grid; place-items: center;
   color: var(--muted); font-size: 0.9rem; background: var(--surface);
 }
+.gallery img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 10px;
+  background: #2b3445; border: 1px solid var(--border); transition: transform 0.2s;
+}
+.cover-fill img { object-fit: cover; }
+.gallery a:hover img { transform: scale(1.02); }
 .gallery figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.4rem; }
 
 /* ---------- Reveal on scroll ---------- */

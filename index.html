@@ -35,6 +35,7 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#education">Education</a></li>
+        <li><a href="#awards">Awards</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
         <li>
@@ -61,9 +62,7 @@
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#projects">View projects</a>
-          <!-- TODO: put a public copy of your CV at assets/Amrit_Sanjeev_CV.pdf (consider removing your phone number), then uncomment:
           <a class="btn btn-ghost" href="assets/Amrit_Sanjeev_CV.pdf" target="_blank" rel="noopener">Download CV</a>
-          -->
           <a class="btn btn-ghost" href="#contact">Get in touch</a>
         </div>
         <ul class="hero-facts">
@@ -96,7 +95,11 @@
             Python, and I spent summer 2026 as a trainee at Nokia in Espoo, working on radio layer
             software. When I'm not at a desk, you'll usually find me on a tennis court.
           </p>
-          <!-- TODO: Personalise this section with what you want to work on next (e.g. propulsion, aerodynamics, flight software). -->
+          <p>
+            Next, I'm working on a mechanical spider: a Rust project in which a neural network learns
+            the motor actions a spider's legs need to walk over any terrain. So far I've built the
+            OpenGL viewer and a physics model of the body as a tree of joints with swing and twist limits.
+          </p>
         </div>
       </div>
     </section>
@@ -116,9 +119,7 @@
                Swap the .card-media placeholder for <img src="assets/img/your-image.jpg" alt="..."> -->
 
           <article class="card" data-category="engineering">
-            <div class="card-media media-1" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><circle cx="45" cy="40" r="18"/><circle cx="75" cy="40" r="18"/><circle cx="60" cy="40" r="4" class="fill"/><path d="M60 40 L110 20"/></svg>
-            </div>
+            <div class="card-media cover-img cover-slate"><img src="projects/ping-pong-launcher/final-design.png" alt="Final CAD design of the ping-pong ball launcher: a barrel on a wooden frame with a belt-driven pulley and bevel gears" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">University collaborative project</p>
               <h3>Ping-Pong Ball Launcher</h3>
@@ -133,9 +134,7 @@
           </article>
 
           <article class="card" data-category="engineering">
-            <div class="card-media media-2" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><path d="M10 45 C 30 22, 80 22, 110 42 C 80 48, 30 50, 10 45 Z"/><path d="M30 60 v-12 M55 62 v-14 M80 60 v-14" class="thin"/></svg>
-            </div>
+            <div class="card-media cover-img cover-white"><img src="projects/aerofoil-investigation/result.png" alt="Diagram of the cantilevered aerofoil bending under load, with the predicted deflection curve in red and the derived deflection equation below" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">IB Extended Essay · Physics</p>
               <h3>Investigating Aerofoils</h3>
@@ -149,15 +148,13 @@
           </article>
 
           <article class="card" data-category="computing">
-            <div class="card-media media-3" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><g class="nodes"><circle cx="20" cy="20" r="4"/><circle cx="20" cy="40" r="4"/><circle cx="20" cy="60" r="4"/><circle cx="60" cy="28" r="4"/><circle cx="60" cy="52" r="4"/><circle cx="100" cy="40" r="4"/></g><path class="thin" d="M24 20 L56 28 M24 20 L56 52 M24 40 L56 28 M24 40 L56 52 M24 60 L56 28 M24 60 L56 52 M64 28 L96 40 M64 52 L96 40"/></svg>
-            </div>
+            <div class="card-media cover-img"><img src="projects/digit-classifier/card-thumb.png" alt="Handwritten digits 0 to 9 from the MNIST test set, white on black" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">Personal project</p>
               <h3>Handwritten Digit Classifier</h3>
               <p>
-                A multi-layer perceptron that classifies handwritten digits 0 to 9, trained on the
-                MNIST dataset in Rust and hardware-accelerated on the GPU with OpenCL.
+                A multi-layer perceptron written from scratch in Rust and trained on the GPU with
+                OpenCL, classifying 96.2% of unseen MNIST handwritten digits correctly.
               </p>
               <ul class="chips"><li>Rust</li><li>OpenCL</li><li>Machine learning</li></ul>
               <a class="card-link" href="projects/digit-classifier.html">Read more →</a>
@@ -165,25 +162,21 @@
           </article>
 
           <article class="card" data-category="computing">
-            <div class="card-media media-4" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><rect x="50" y="30" width="20" height="20" rx="3" class="fill"/><path class="thin" d="M5 20 C40 20, 40 28, 50 30 M5 40 H50 M5 60 C40 60, 40 52, 50 50 M70 30 C80 28, 85 20, 115 20 M70 40 H115 M70 50 C80 52, 85 60, 115 60"/></svg>
-            </div>
+            <div class="card-media cover-img cover-fill cover-navy"><img src="projects/fluid-simulator/render2.png" alt="Streamlines from the 3D fluid simulator flowing around an aerofoil and a cube" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">Personal project</p>
               <h3>3D Fluid Simulator</h3>
               <p>
-                A grid-based 3D fluid solver tracking velocity, pressure and temperature per parcel,
-                with support for importing custom 3D meshes and simulating flow around them.
+                A grid-based 3D Navier&ndash;Stokes solver that simulates flow, pressure and temperature
+                around custom .obj meshes, shown in real time as slices, volumes or streamlines.
               </p>
-              <ul class="chips"><li>C++</li><li>OpenGL</li><li>CFD</li></ul>
+              <ul class="chips"><li>C++</li><li>OpenGL</li><li>CFD</li><li>Navier&ndash;Stokes</li></ul>
               <a class="card-link" href="projects/fluid-simulator.html">Read more →</a>
             </div>
           </article>
 
           <article class="card" data-category="computing">
-            <div class="card-media media-5" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><circle cx="60" cy="40" r="28"/><ellipse cx="60" cy="40" rx="12" ry="28" class="thin"/><path class="thin" d="M32 40 H88 M36 26 H84 M36 54 H84"/></svg>
-            </div>
+            <div class="card-media cover-img"><img src="projects/era5-globe/render.png" alt="ERA5 surface temperature data rendered on a 3D globe centred on the Americas, warm regions in red and cold regions in blue" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">Personal project</p>
               <h3>ERA5 Temperature Globe</h3>
@@ -197,17 +190,15 @@
           </article>
 
           <article class="card" data-category="engineering">
-            <div class="card-media media-6" aria-hidden="true">
-              <svg viewBox="0 0 120 80"><path class="thin" d="M10 65 H110 M15 70 V10"/><path d="M15 55 C35 55, 40 20, 60 25 S 90 50, 110 30"/></svg>
-            </div>
+            <div class="card-media cover-img"><img src="projects/matlab-control/setup.jpg" alt="Arduino-compatible board wired to an HC-SR04 ultrasonic ranging module on a breadboard" loading="lazy"></div>
             <div class="card-body">
               <p class="card-tag">Coursework</p>
               <h3>Sensor Control Loops in MATLAB</h3>
               <p>
-                Simulated and recorded sensor control data loops in MATLAB, then processed the
-                results to evaluate system behaviour.
+                Calibrated an ultrasonic ranging sensor through MATLAB and Arduino, raising its
+                accuracy from 92% to 98%, and mapped its beam cone for a drone landing system.
               </p>
-              <ul class="chips"><li>MATLAB</li><li>Control</li><li>Data processing</li></ul>
+              <ul class="chips"><li>MATLAB</li><li>Arduino</li><li>Sensor calibration</li></ul>
               <a class="card-link" href="projects/matlab-control.html">Read more →</a>
             </div>
           </article>
@@ -256,8 +247,8 @@
             <h3>University of Bath, UK</h3>
             <p class="sub">BEng Aerospace Engineering</p>
             <ul class="grades">
-              <li><span>Engineering Mathematics (ME12001)</span><strong>68%</strong></li>
-              <li><span>Thermofluids (ME12003)</span><strong>70%</strong></li>
+              <li><span>Engineering Mathematics (ME12001)</span><strong>2:1</strong></li>
+              <li><span>Thermofluids (ME12003)</span><strong>1</strong></li>
             </ul>
           </article>
           <article class="edu-card">
@@ -282,10 +273,34 @@
       </div>
     </section>
 
-    <!-- ============ SKILLS ============ -->
-    <section id="skills" class="section">
+    <!-- ============ AWARDS ============ -->
+    <section id="awards" class="section">
       <div class="container">
-        <h2 class="section-title"><span class="num">05</span> Skills</h2>
+        <h2 class="section-title"><span class="num">05</span> Awards</h2>
+        <div class="edu-grid">
+          <article class="edu-card">
+            <span class="date">University of Bath</span>
+            <h3>Chancellor’s Scholarship</h3>
+            <p class="sub">Awarded for achieving excellent results in core subjects.</p>
+          </article>
+          <article class="edu-card">
+            <span class="date">Technology Industries of Finland</span>
+            <h3>Centennial Award (€1,000)</h3>
+            <p class="sub">Awarded for achieving exemplary results in advanced mathematics.</p>
+          </article>
+          <article class="edu-card">
+            <span class="date">MAOL, Finland</span>
+            <h3>National High School Maths Competition</h3>
+            <p class="sub">Ranked among the top 70 in the national competition.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title"><span class="num">06</span> Skills</h2>
         <div class="skills-grid">
           <div class="skill-group">
             <h3>Engineering &amp; CAD</h3>
@@ -322,16 +337,14 @@
     </section>
 
     <!-- ============ CONTACT ============ -->
-    <section id="contact" class="section section-alt">
+    <section id="contact" class="section">
       <div class="container contact">
-        <h2 class="section-title"><span class="num">06</span> Get in touch</h2>
+        <h2 class="section-title"><span class="num">07</span> Get in touch</h2>
         <p class="lead">I'm open to placements, internships and engineering collaborations.</p>
         <div class="contact-links">
           <a class="btn btn-primary" href="mailto:ass318@bath.ac.uk">ass318@bath.ac.uk</a>
           <a class="btn btn-ghost" href="https://github.com/AmritSanjeev2007" target="_blank" rel="noopener">GitHub</a>
-          <!-- TODO: add your LinkedIn URL, then uncomment
-          <a class="btn btn-ghost" href="https://www.linkedin.com/in/YOUR-HANDLE" target="_blank" rel="noopener">LinkedIn</a>
-          -->
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/amrit-sanjeev-93165a298/" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
     </section>
